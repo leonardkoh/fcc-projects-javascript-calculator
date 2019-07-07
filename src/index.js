@@ -1,12 +1,36 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+
+// child class
+class Calculator extends React.Component {
+    constructor(props) {
+        super(props)
+    }
+
+    render() {
+        return(
+            <div>
+                hello world!
+            </div>
+        );
+    }
+}
+
+// parent class capturing user input
+class App extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            value: ''
+        }
+    }
+    render() {
+        return (
+            <div>
+                <Calculator />
+            </div>
+        )
+    }
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
