@@ -22,4 +22,6 @@ Note On Calculator Logic: It should be noted that there are two main schools of 
 <br>
 EXAMPLE: 3 + 5 x 6 - 2 / 4 =
 Immediate Execution Logic: 11.5
-Formula/Expression Logic: 32.5
+Formula/Expression Logic: 32.5 <br>
+<br>
+Deployed on: http://lk-javascript-calculator.netlify.com
