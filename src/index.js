@@ -2,6 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles.css';
 
+const operator = {
+    '+': (x,y) => { return x+y; },
+    '-': (x,y) => { return x-y; },
+    'x': (x,y) => { return x*y; },
+    '/': (x,y) => { return x/y; },
+}
+
 class CalculatorButton extends React.Component {
     constructor(props) {
         super(props)
@@ -46,21 +53,32 @@ class Calculator extends React.Component {
     handleClick(e) {
         this.state.result==='0' ? this.setState({ result: e.target.value}) : 
         this.setState({result: this.state.result + e.target.value})
-
+        
         if(e.target.value==='AC')
             this.setState({ result: '0' });
 
-        if(e.target.value==='=')
+        if(e.target.value==='=') 
             this.calculate();
         
-        console.log(this.state.result);
+        // console.log(this.state.result);
     }
 
     calculate() {
-        let x = this.state.result.indexOf('+');
+        let x = operator['+'](Number(n[0]),Number(n[1]));
         console.log(x);
+        console.log(typeof(x));
+
+        // let nums = this.state.result.split('+');
+        // console.log(operator['+'](nums[0],nums[1]));
+
+        // console.log(typeof(eval(this.state.result).toString()));
+        // this.setState({
+        //     result: eval(this.state.result).toString()
+        // })
+        // return eval(this.state.result);
         // let x = this.state.result.split(/x/g);
         // console.log(`RESULT: ${x}`);
+        // this.resetState();
     }
 
     render() {
