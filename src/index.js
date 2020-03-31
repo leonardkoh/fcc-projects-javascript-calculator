@@ -3,10 +3,30 @@ import ReactDOM from 'react-dom';
 import './styles.css';
 
 const operator = {
-    '+': (x,y) => { return x+y; },
-    '-': (x,y) => { return x-y; },
-    'x': (x,y) => { return x*y; },
-    '/': (x,y) => { return x/y; },
+    '+': (x,y) => { return Number(x)+Number(y); },
+    '-': (x,y) => { return Number(x)-Number(y); },
+    'x': (x,y) => { return Number(x)*Number(y); },
+    '/': (x,y) => { return Number(x)/Number(y); },
+}
+const row1Buttons = {
+    '1': "one",
+    '2': "two",
+    '3': "three",
+    '+': "add",
+    'x': "multiply"
+}
+const row2Buttons = {
+    '4': "four",
+    '5': "five",
+    '6': "six",
+    '-': "subtract",
+    '/': "divide"
+}
+const row3Buttons = {
+    '7': "seven",
+    '8': "eight",
+    '9': "nine",
+    '.': "decimal"
 }
 
 class CalculatorButton extends React.Component {
@@ -32,7 +52,7 @@ class CalculatorButton extends React.Component {
                 )
             default:
                 return(
-                    <button type="button" id={this.props.id} className="btn btn-secondary px-4 py-3 mt-0 " value={this.props.value} onClick={this.handleClick}>{this.props.value}</button>    
+                    <button type="button" id={this.props.id} className="btn btn-secondary px-4 py-3 mt-0     " value={this.props.value} onClick={this.handleClick}>{this.props.value}</button>    
                 )
         }
     }
@@ -42,8 +62,9 @@ class Calculator extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            // input: '0',
-            result: '0'
+            input: '0',
+            result: '0',
+            previous: '0'
         }
 
         this.handleClick = this.handleClick.bind(this);
@@ -51,65 +72,76 @@ class Calculator extends React.Component {
     }
 
     handleClick(e) {
-        this.state.result==='0' ? this.setState({ result: e.target.value}) : 
-        this.setState({result: this.state.result + e.target.value})
+        if(this.state.input==='0')
+            this.setState({ input: e.target.value, result: e.target.value });
+        else {
+            if(e.target.value==='.' && this.state.input.indexOf('.')>-1)
+                this.setState({ input: this.state.input, result: this.state.result});
+            else
+                this.setState({ input: this.state.input + e.target.value, result: this.state.result + e.target.value });
+        }
         
         if(e.target.value==='AC')
-            this.setState({ result: '0' });
+            this.setState({ input:'0', result: '0' });
 
         if(e.target.value==='=') 
-            this.calculate();
-        
-        // console.log(this.state.result);
+            this.setState({
+                input: '0',
+                result: this.calculate(),
+        })
+
+        //preivous
+        this.setState({ previous: this.state.result});
+        console.log(`Handleclick previous: ${this.state.previous}`);
     }
 
     calculate() {
-        let x = operator['+'](Number(n[0]),Number(n[1]));
-        console.log(x);
-        console.log(typeof(x));
+        console.log(`Calculate result: ${this.state.result}`);
+        console.log(`Calculate input: ${this.state.input}`);
+        console.log(`Calculate prevous: ${this.state.previous}`);
 
-        // let nums = this.state.result.split('+');
-        // console.log(operator['+'](nums[0],nums[1]));
 
-        // console.log(typeof(eval(this.state.result).toString()));
-        // this.setState({
-        //     result: eval(this.state.result).toString()
-        // })
-        // return eval(this.state.result);
-        // let x = this.state.result.split(/x/g);
-        // console.log(`RESULT: ${x}`);
-        // this.resetState();
+        let op = this.state.input.replace(/\s/g,'').match(/\/|x|\-|\+/g);
+        
+        if(op<1) {
+            return this.state.input;
+        }
+        // if 1 occurrence
+        if(op.length===1) {
+            let x = this.state.input.split(op[0]);
+            return operator[op[0]](x[0],x[1].toString());
+        }
+        //if more than 1 occurrence
+        if(op.length>1) {
+            console.log(op);
+        }
     }
 
     render() {
         return(
             <div className="pt-5">
                 <div id="calculator" className="ml-auto mr-auto py-4">
+                    <div id="input" className="pt-3 text-right pr-5">{this.state.input}</div>
                     <div id="display" className="pt-3 text-right pr-5">{this.state.result}</div>
                     <br />
-                    <br />
-                    <div className="btn-group">
-                        <CalculatorButton value="1" id="one" onClick={this.handleClick}/>
-                        <CalculatorButton value="2" id="two" onClick={this.handleClick}/>                    
-                        <CalculatorButton value="3" id="three" onClick={this.handleClick}/>
-                        <CalculatorButton value="+" id="add" onClick={this.handleClick}/>
-                        <CalculatorButton value="x" id="multiply" onClick={this.handleClick}/>
+                    <div className="btn-group"> {
+                        Object.entries(row1Buttons).map(([k,v]) => {
+                           return( <CalculatorButton value={k} id={v} onClick={this.handleClick}/>)
+                        }) 
+                    }
                     </div>
-                    <br />
-                    <div className="btn-group">
-                        <CalculatorButton value="4" id="four" onClick={this.handleClick}/>
-                        <CalculatorButton value="5" id="five"onClick={this.handleClick}/>                    
-                        <CalculatorButton value="6" id="six" onClick={this.handleClick}/>
-                        <CalculatorButton value="-" id="subtract" onClick={this.handleClick}/>
-                        <CalculatorButton value="/" id="divide" onClick={this.handleClick}/>
+                    <div className="btn-group"> {
+                        Object.entries(row2Buttons).map(([k,v]) => {
+                            return( <CalculatorButton value={k} id={v} onClick={this.handleClick}/>)
+                        }) 
+                    }
                     </div>
-                    <br />
-                    <div className="btn-group">
-                        <CalculatorButton value="7" id="seven" onClick={this.handleClick}/>
-                        <CalculatorButton value="8" id="eight" onClick={this.handleClick}/>                    
-                        <CalculatorButton value="9" id="nine" onClick={this.handleClick}/>
-                        <CalculatorButton value="0" id="zero" onClick={this.handleClick}/>
-                        <CalculatorButton value="." id="decimal" onClick={this.handleClick}/>
+                    <div className="btn-group"> {
+                        Object.entries(row3Buttons).map(([k,v]) => {
+                            return( <CalculatorButton value={k} id={v} onClick={this.handleClick}/>)
+                        }) 
+                    }
+                    <CalculatorButton value="0" id="zero" onClick={this.handleClick}/>
                     </div>
                     <div className="btn-group">
                         <CalculatorButton value="AC" id="clear" onClick={this.handleClick}/>
