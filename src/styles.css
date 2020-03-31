@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Nova+Square&display=swap');
+
 body {
     text-align: center;
     height: 100vw;
     background: lightgray;
+    font-family: 'Nova Square', cursive;
 }
 
 .btn {
@@ -9,13 +12,11 @@ body {
     padding: 1.5vw;
 }
 
-#spacer {
-    height: 5vw;
+#display {
+    font-size: 2rem;
 }
 
 #calculator {
     background: whitesmoke;
     width: 40vw;
-    margin: auto;
-    padding: 2vw;
 }

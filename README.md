@@ -1,4 +1,4 @@
-# Free Code Camp - Front End Libraries Projects - Build a Random Quote Machine
+# Free Code Camp - Front End Libraries Projects - Build a JavaScript Calculator
 Tasks Required:
 <ul>
 <li>User Story #1: My calculator should contain a clickable element containing an = (equal sign) with a corresponding id="equals".</li>
